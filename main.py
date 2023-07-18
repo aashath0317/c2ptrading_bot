@@ -77,12 +77,6 @@ async def my_event_handler(event):
         tp2 = str(tstring[3].split(":")[1].strip(" "))
         if pair == "GOLD":
             pair = "XAUUSD"
-        else:
-            pass 
-        s_message = order+" "+pair+"\n"+"Entry NOW"+"\n"+"SL "+sl+"\n"+"TP "+tp1
-       # s_message = order+" "+pair+"\n"+"Entry NOW"+"\n"+"SL "+sl+"\n"+"TP1 "+tp1+"\n"+"TP2 "+tp2
-        #await client.send_message(group_id, "/trade")
-       # await client.send_message(group_id, s_message)
         api = MetaApi(API_KEY)
         account = await api.metatrader_account_api.get_account(ACCOUNT_ID)
         initial_state = account.state
@@ -135,9 +129,18 @@ async def my_event_handler(event):
                 await client.send_message(-1001964100487, ID)
             else:
                 await connection.create_market_sell_order(pair, 0.01,float(sl),float(tp1))
-                await client.send_message(igroup, "Order Placed 🎯")        
+                await client.send_message(igroup, "Order Placed 🎯")                    
+        else:
+            pass
+             
+       # s_message = order+" "+pair+"\n"+"Entry NOW"+"\n"+"SL "+sl+"\n"+"TP "+tp1
+       # s_message = order+" "+pair+"\n"+"Entry NOW"+"\n"+"SL "+sl+"\n"+"TP1 "+tp1+"\n"+"TP2 "+tp2
+        #await client.send_message(group_id, "/trade")
+       # await client.send_message(group_id, s_message)
+
     else:
-        await client.send_message(igroup, 'Trading Not Placed \n Check this string  \n '+str(tstring))
+        #await client.send_message(igroup, 'Trading Not Placed \n Check this string  \n '+str(tstring))
+        pass
 
 @client.on(events.MessageEdited(chats=channel_id))
 async def my_event_handler(event):
@@ -184,7 +187,7 @@ async def my_event_handler(event):
                         #  wait until account is deployed and connected to broker
                     logger.info('Deploying account')
                     await account.deploy()
-
+        
                 logger.info('Waiting for API server to connect to broker ...')
                 await account.wait_connected()
                     # connect to MetaApi API
@@ -196,7 +199,8 @@ async def my_event_handler(event):
                 account_information = await connection.get_account_information()
                 ID = await connection.modify_position(ID, float(sl), float(tp1))
                 await client.send_message(igroup, "Order modified ✅")
-
+    else:
+        pass
 
 '''
 @client.on(events.NewMessage(chats=channel_2))
